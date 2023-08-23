@@ -7,7 +7,7 @@
         platformio
         (python3.withPackages (ps: with ps; [
           pyserial
-          matplotlib3
+          matplotlib
         ]))
       ];
     };
