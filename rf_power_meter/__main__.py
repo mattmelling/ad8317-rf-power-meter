@@ -1,12 +1,11 @@
 import datetime
-import serial
 
 import numpy as np
 
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
-device = "/dev/ttyACM0"
+from .adc import ADC
 
 calibration = np.array([
     (0, -80),
@@ -21,21 +20,22 @@ def adc_to_dbm(adc):
 
 class PowerMeter:
 
-    def __init__(self, port='/dev/ttyACM0', samp_length=128):
-        self.samp_length = samp_length
+    def __init__(self, adc, samp_length=128):
         self.x = []
         self.y = []
-
-        self.port = serial.Serial(port=port, baudrate=115200)
+        self.adc = adc
+        self.samp_length = samp_length
+        self.current = 0
+        self.current_adc = 0
 
     def acquire(self):
-        self.port.write('m'.encode('utf8'))
-        self.port.flush()
+        data = self.adc.acquire()
 
-        data = self.port.readline().decode('utf').strip()
+        self.current_adc = sum(data) / len(data)
+        self.current = adc_to_dbm(self.current_adc)
 
         self.x.append(datetime.datetime.now())
-        self.y.append(adc_to_dbm(int(data)))
+        self.y.append(self.current)
 
         self.x = self.x[-self.samp_length:]
         self.y = self.y[-self.samp_length:]
@@ -53,9 +53,7 @@ class PowerMeter:
         self.ax.plot(self.x, self.y)
         self.ax.grid(visible=True)
 
-        avg = sum(self.y[-10:]) / len(self.y[-10:])
-
-        self.ax.text(0.1, 0.9, f'{avg:.2f} dBm',
+        self.ax.text(0.1, 0.9, f'{self.current:.2f} dBm',
                      fontsize=15, transform=self.ax.transAxes)
 
     def draw(self):
@@ -65,4 +63,5 @@ class PowerMeter:
         plt.show()
 
 
-PowerMeter().draw()
+adc = ADC()
+PowerMeter(adc).draw()

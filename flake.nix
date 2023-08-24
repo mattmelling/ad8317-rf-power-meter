@@ -8,6 +8,7 @@
         (python3.withPackages (ps: with ps; [
           pyserial
           matplotlib
+          pyusb
         ]))
       ];
     };
