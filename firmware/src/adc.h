@@ -4,6 +4,7 @@
 #include <cstdint>
 
 void adc_setup();
-void adc_sample();
+uint16_t* adc_sample();
+uint8_t adc_get_num_channels();
 
 #endif

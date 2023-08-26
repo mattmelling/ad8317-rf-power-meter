@@ -19,6 +19,8 @@
 
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/cm3/scb.h>
+#include <libopencm3/stm32/dma.h>
+#include <libopencm3/cm3/nvic.h>
 
 #include "main.h"
 #include "usb.h"
@@ -27,7 +29,6 @@
 
 int main(void)
 {
-	SCB_VTOR = (uint32_t) 0x08005000;
 
 	rcc_clock_setup_in_hse_8mhz_out_72mhz();
 

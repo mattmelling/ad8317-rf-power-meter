@@ -53,15 +53,15 @@ class PowerMeter:
         self.ax.plot(self.x, self.y)
         self.ax.grid(visible=True)
 
-        self.ax.text(0.1, 0.9, f'{self.current:.2f} dBm',
-                     fontsize=15, transform=self.ax.transAxes)
+        self.ax.set_title(f'{self.current:.2f} dBm')
 
     def draw(self):
         fig, ax = plt.subplots()
         self.ax = ax
-        ani = animation.FuncAnimation(fig, self.update, blit=False, interval=10)
+        ani = animation.FuncAnimation(fig, self.update, blit=False, interval=50)
         plt.show()
 
 
 adc = ADC()
 PowerMeter(adc).draw()
+

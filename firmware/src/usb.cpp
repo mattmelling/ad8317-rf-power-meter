@@ -17,22 +17,25 @@ enum usbd_request_return_codes usb_control_request(usbd_device *usbd_dev, struct
 	(void)buf;
 	(void)usbd_dev;
 
-    if(req->bRequest == USB_CTRL_LED_OFF) {
+    uint16_t samples[32];
+
+    switch(req->bRequest) {
+    case USB_CTRL_LED_OFF:
+      led_off();
+      return USBD_REQ_HANDLED;
+    case USB_CTRL_LED_ON:
+      led_on();
+      return USBD_REQ_HANDLED;
+    case USB_CTRL_SAMPLE:
+      led_on();
+      for(int i = 0; i < 32; i++) {
+        samples[i] = adc_sample()[0];
+      }
+      usbd_ep_write_packet(usbd_dev, 0x82, samples, 32);
       led_off();
       return USBD_REQ_HANDLED;
     }
-
-    if(req->bRequest == USB_CTRL_LED_ON) {
-      led_on();
-      return USBD_REQ_HANDLED;
-    }
-
-    if(req->bRequest == USB_CTRL_SAMPLE) {
-      adc_sample();
-      return USBD_REQ_HANDLED;
-    }
-
-	return USBD_REQ_NOTSUPP;
+    return USBD_REQ_NOTSUPP;
 }
 
 void usb_data_rx_cb(usbd_device *usbd_dev, uint8_t ep)

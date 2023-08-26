@@ -22,8 +22,11 @@ class ADC:
 
         return self._device
 
-    def acquire(self):
-        self.device.ctrl_transfer(0x40, 0x12, 0, 0, None)
-        data = self.device.read(0x82, 64, 100)
+    def decode(self, data):
         return [(data[2 * i]) + (data[(2 * i) + 1] << 8)
                 for i in range(int(len(data)/2))]
+
+    def acquire(self, channel=0, n=32):
+        self.device.ctrl_transfer(0x40, 0x12, 0, 0, [0, 32])
+        data = self.device.read(0x82, 32, 1000)
+        return self.decode(data)
