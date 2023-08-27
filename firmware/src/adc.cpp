@@ -6,9 +6,9 @@
 #include <libopencm3/cm3/nvic.h>
 
 // Static allocations
-const uint8_t channel_length { 2 };
+const uint8_t channel_length { 3 };
 uint16_t channels[channel_length];
-constexpr uint8_t chanlist[channel_length] { 1, 16 };
+constexpr uint8_t chanlist[channel_length] { 1, 16, 17 };
 volatile bool flag;
 
 uint8_t adc_get_num_channels()

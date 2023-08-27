@@ -53,7 +53,7 @@ class PowerMeter:
         self.ax.plot(self.x, self.y)
         self.ax.grid(visible=True)
 
-        self.ax.set_title(f'{self.current:.2f} dBm')
+        self.ax.set_title(f'{self.current:.2f} dBm, {self.adc.vbat():.2f}V, {self.adc.temp():.1f}C')
 
     def draw(self):
         fig, ax = plt.subplots()
@@ -64,4 +64,3 @@ class PowerMeter:
 
 adc = ADC()
 PowerMeter(adc).draw()
-

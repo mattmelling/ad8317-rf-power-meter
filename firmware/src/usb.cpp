@@ -18,6 +18,8 @@ enum usbd_request_return_codes usb_control_request(usbd_device *usbd_dev, struct
 	(void)usbd_dev;
 
     uint16_t samples[32];
+    uint8_t n;
+    uint8_t ch;
 
     switch(req->bRequest) {
     case USB_CTRL_LED_OFF:
@@ -27,11 +29,13 @@ enum usbd_request_return_codes usb_control_request(usbd_device *usbd_dev, struct
       led_on();
       return USBD_REQ_HANDLED;
     case USB_CTRL_SAMPLE:
+      ch = (*buf)[0];
+      n = (*buf)[1];
       led_on();
-      for(int i = 0; i < 32; i++) {
-        samples[i] = adc_sample()[0];
+      for(int i = 0; i < n; i++) {
+        samples[i] = adc_sample()[ch];
       }
-      usbd_ep_write_packet(usbd_dev, 0x82, samples, 32);
+      usbd_ep_write_packet(usbd_dev, 0x82, samples, n);
       led_off();
       return USBD_REQ_HANDLED;
     }

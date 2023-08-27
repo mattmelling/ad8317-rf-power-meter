@@ -27,6 +27,18 @@ class ADC:
                 for i in range(int(len(data)/2))]
 
     def acquire(self, channel=0, n=32):
-        self.device.ctrl_transfer(0x40, 0x12, 0, 0, [0, 32])
+        self.device.ctrl_transfer(0x40, 0x12, 0, 0, [channel, n])
         data = self.device.read(0x82, 32, 1000)
         return self.decode(data)
+
+    def temp(self):
+        t = self.acquire(channel=1, n=4)
+        t = sum(t) / len(t)
+        t = ((1774 - t) / 430) + 25
+        return t
+
+    def vbat(self):
+        t = self.acquire(channel=2, n=4)
+        t = sum(t) / len(t)
+        t = (3.3 / 4096) * t
+        return t
