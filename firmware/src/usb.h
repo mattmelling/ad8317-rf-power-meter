@@ -73,7 +73,7 @@ static const struct usb_config_descriptor config = {
 };
 
 static const char *usb_strings[] = {
-	"J3M Industries",
+	"2E0YML",
 	"AD8317 RF Power Sensor",
 	"",
 };

@@ -32,6 +32,7 @@ class ADC:
         return self.decode(data)
 
     def temp(self):
+        # todo: Calibration?
         t = self.acquire(channel=1, n=4)
         t = sum(t) / len(t)
         t = ((1774 - t) / 430) + 25
