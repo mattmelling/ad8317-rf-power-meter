@@ -10,4 +10,7 @@ External attenuation can be specified, again it is important to measure this at 
 * SWR Measurement
 Using a directional coupler it is possible to measure the return loss, and use this to calculate VSWR:
 
-$$\text{VSWR} = \frac{1 + 10^\frac{-S_{21}}{20}}{1 - 10^\frac{-S_{21}}{20}}}$$
+$$\text{VSWR} = \frac{1 + 10\frac{-S_{21}}{20}}{1 - 10\frac{-S_{21}}{20}}$$
+
+* Is it accurate?
+About as accurate as your calibration. To get the best results you need an accurate signal source. For 2.4GHz I have used some data collected by DD1US using a PlutoSDR. This is unlikely to be accurate for *my* PlutoSDR but is roughly in the same order of magnitude. My main use case for this is measuring gain from amplifiers, so it is the delta between measurements rather than the absolute value that is important. 
