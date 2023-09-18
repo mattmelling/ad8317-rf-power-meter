@@ -1,0 +1,13 @@
+* AD8317 RF Power Meter
+This is an RF power meter I built to help measure amplifiers for a QO-100 transciever project.
+
+The AD8317 has a linear output for -35dBm up to about -5dBm, which is fed in to the analog input of a blue pill board. The Python script polls for samples and displays on a graph with some stats.
+
+Measurements are highly dependent on frequency, so it is important to edit the calibration data in ~__main__.py~ for the band you want to measure. The calibration matrix specifies pairs of ADC values and the corresponding power level in dBm.
+
+External attenuation can be specified, again it is important to measure this at the frequency you want to measure.
+
+* SWR Measurement
+Using a directional coupler it is possible to measure the return loss, and use this to calculate VSWR:
+
+$$\text{VSWR} = \frac{1 + 10^\frac{-S_{21}}{20}}{1 - 10^\frac{-S_{21}}{20}}}$$
